@@ -21,6 +21,6 @@ func NewApplication() Application {
 func (app *application) Run() {
 	deps := app.deps
 
-	appServer := deps.AppServer()
-	appServer.Start()
+	application := deps.AppServer()
+	application.Start()
 }

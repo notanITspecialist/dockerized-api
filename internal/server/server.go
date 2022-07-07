@@ -1,15 +1,19 @@
 package server
 
+import "fmt"
+
 type (
 	Server interface {
 		Start()
 	}
 
-	appServer struct{}
+	server struct{}
 )
 
-func NewAppServer() (Server, error) {
-	return &appServer{}, nil
+func NewServer() (Server, error) {
+	return &server{}, nil
 }
 
-func (s *appServer) Start() {}
+func (s *server) Start() {
+	fmt.Println("Start SERVER!")
+}

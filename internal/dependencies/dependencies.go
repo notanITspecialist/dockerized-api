@@ -8,7 +8,7 @@ type (
 	}
 
 	dependencies struct {
-		appServer server.Server
+		server server.Server
 	}
 )
 
@@ -17,13 +17,13 @@ func NewDependencies() Dependencies {
 }
 
 func (d *dependencies) AppServer() server.Server {
-	if d.appServer == nil {
-		appServer, err := server.NewAppServer()
+	if d.server == nil {
+		appServer, err := server.NewServer()
 		if err != nil {
-			panic("SERVER INITIALIZE ERROR!") // temporary
+			panic("Error while initialize web server!") // temporary
 		}
 
-		d.appServer = appServer
+		d.server = appServer
 	}
-	return d.appServer
+	return d.server
 }
