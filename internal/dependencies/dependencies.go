@@ -20,7 +20,7 @@ func (d *dependencies) AppServer() server.Server {
 	if d.server == nil {
 		appServer, err := server.NewServer()
 		if err != nil {
-			panic("SERVER ERROR")
+			panic(err)
 		}
 
 		d.server = appServer
