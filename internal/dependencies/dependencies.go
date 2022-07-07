@@ -3,6 +3,7 @@ package dependencies
 import (
 	"dockerized-api/internal/endpoints"
 	"dockerized-api/internal/server"
+	"dockerized-api/internal/service"
 )
 
 type (
@@ -14,6 +15,7 @@ type (
 		server server.Server
 
 		orderEndpoints endpoints.OrderEndpoints
+		orderService   service.OrderService
 	}
 )
 
@@ -35,8 +37,17 @@ func (d *dependencies) AppServer() server.Server {
 
 func (d *dependencies) OrderEndpoints() endpoints.OrderEndpoints {
 	if d.orderEndpoints == nil {
-		orderEndpoints := endpoints.NewOrderEndpoints()
+		orderEndpoints := endpoints.NewOrderEndpoints(
+			d.OrderService(),
+		)
 		d.orderEndpoints = orderEndpoints
 	}
 	return d.orderEndpoints
+}
+func (d *dependencies) OrderService() service.OrderService {
+	if d.orderService == nil {
+		orderService := service.NewOrderService()
+		d.orderService = orderService
+	}
+	return d.orderService
 }
