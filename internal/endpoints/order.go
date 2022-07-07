@@ -2,6 +2,7 @@ package endpoints
 
 import (
 	"dockerized-api/internal/service"
+	"encoding/json"
 	"net/http"
 )
 
@@ -23,6 +24,19 @@ func NewOrderEndpoints(
 	}
 }
 
-func (h *orderHandler) GetOrders(_ http.ResponseWriter, r *http.Request) {
-	h.service.GetOrders(r.Context())
+func (h *orderHandler) GetOrders(w http.ResponseWriter, r *http.Request) {
+	orders, err := h.service.GetOrders(r.Context())
+	if err != nil {
+		// log error
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+	err = json.NewEncoder(w).Encode(orders)
+	if err != nil {
+		// log error
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
 }

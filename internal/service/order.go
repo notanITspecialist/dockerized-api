@@ -7,7 +7,7 @@ import (
 
 type (
 	OrderService interface {
-		GetOrders(ctx context.Context)
+		GetOrders(ctx context.Context) ([]repository.Order, error)
 	}
 
 	orderService struct {
@@ -23,6 +23,12 @@ func NewOrderService(
 	}
 }
 
-func (s *orderService) GetOrders(ctx context.Context) {
-	s.repository.GetOrders(ctx)
+func (s *orderService) GetOrders(ctx context.Context) ([]repository.Order, error) {
+	orders, err := s.repository.GetOrders(ctx)
+	if err != nil {
+		// log error
+		return nil, err
+	}
+
+	return orders, err
 }
