@@ -2,6 +2,7 @@ package dependencies
 
 import (
 	"dockerized-api/internal/endpoints"
+	"dockerized-api/internal/repository"
 	"dockerized-api/internal/server"
 	"dockerized-api/internal/service"
 )
@@ -14,8 +15,9 @@ type (
 	dependencies struct {
 		server server.Server
 
-		orderEndpoints endpoints.OrderEndpoints
-		orderService   service.OrderService
+		orderEndpoints  endpoints.OrderEndpoints
+		orderService    service.OrderService
+		orderRepository repository.OrderRepository
 	}
 )
 
@@ -46,8 +48,17 @@ func (d *dependencies) OrderEndpoints() endpoints.OrderEndpoints {
 }
 func (d *dependencies) OrderService() service.OrderService {
 	if d.orderService == nil {
-		orderService := service.NewOrderService()
+		orderService := service.NewOrderService(
+			d.OrderRepository(),
+		)
 		d.orderService = orderService
 	}
 	return d.orderService
+}
+func (d *dependencies) OrderRepository() repository.OrderRepository {
+	if d.orderRepository == nil {
+		orderRepository := repository.NewOrderRepository()
+		d.orderRepository = orderRepository
+	}
+	return d.orderRepository
 }

@@ -1,19 +1,28 @@
 package service
 
-import "context"
+import (
+	"context"
+	"dockerized-api/internal/repository"
+)
 
 type (
 	OrderService interface {
 		GetOrders(ctx context.Context)
 	}
 
-	orderService struct{}
+	orderService struct {
+		repository repository.OrderRepository
+	}
 )
 
-func NewOrderService() OrderService {
-	return &orderService{}
+func NewOrderService(
+	repository repository.OrderRepository,
+) OrderService {
+	return &orderService{
+		repository: repository,
+	}
 }
 
-func (s *orderService) GetOrders(_ context.Context) {
-	panic("ORDERS SERVICE!")
+func (s *orderService) GetOrders(ctx context.Context) {
+	s.repository.GetOrders(ctx)
 }
